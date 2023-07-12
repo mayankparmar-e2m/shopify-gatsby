@@ -1,0 +1,22 @@
+.aricle-page .content h2{
+    font-weight: 700;
+    font-size: 30px;
+    color: #121212;
+    margin: 20px 0;
+}
+.aricle-page .content p{
+    font-weight: 400;
+    font-size: 18px;
+    color: #121212;
+    line-height: 28px;
+    margin: 20px 0;
+}
+.aricle-page .content a{
+    text-decoration: underline;
+}
+.aricle-page .title{
+    font-weight: 700;
+    font-size: 40px;
+    color: #121212;
+    margin: 20px 0;
+}
