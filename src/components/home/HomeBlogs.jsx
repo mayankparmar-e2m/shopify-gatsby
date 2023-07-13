@@ -40,7 +40,6 @@ import React from 'react'
 //       }`
 export default function HomeBlogs({blogs}) {
   // const bdata = useQuery( COMMENTS_QUERY)
-  console.log(blogs,"ddddddddddd")
   return (
 
         <div className='home-blog-section'>

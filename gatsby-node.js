@@ -39,12 +39,7 @@ exports.createPages = async ({ graphql, actions }) => {
                   namespace
                 }
                 productType
-                priceRange {
-                  maxVariantPrice {
-                    amount
-                    currencyCode
-                  }
-                }
+    
                 tags
                 title
                 variants {

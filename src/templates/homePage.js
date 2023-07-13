@@ -58,16 +58,7 @@ export const myQuery = graphql`
       description
       handle
       id
-      priceRange {
-        maxVariantPrice {
-          amount
-          currencyCode
-        }
-        minVariantPrice {
-          amount
-          currencyCode
-        }
-      }
+   
       productType
       title
       variants {
