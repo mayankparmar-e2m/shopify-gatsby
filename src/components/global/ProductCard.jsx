@@ -1,10 +1,22 @@
 import { Link } from 'gatsby'
 import { GatsbyImage, getImage } from 'gatsby-plugin-image'
-import React from 'react'
+import React, { useState } from 'react'
+import useCart from '../../hooks/useCart';
 
 export default function ProductCard({product}) {
+  const  {addVariantToCart,toggleCartDrawer} =useCart();
+  const [addToCartLoader,setAddToCartLoader]=useState(false)
     const selectedVariant=  product.variants[0];
+    console.log(selectedVariant,'selectedVariantselectedVariant')
     const imageData=getImage(selectedVariant.image) || getImage(product?.featuredImage?.gatsbyImageData)
+    const addToCart=()=>{
+        setAddToCartLoader(true)
+        addVariantToCart({variantId:selectedVariant.storefrontId, quantity:1},()=>{
+         setAddToCartLoader(false);
+         toggleCartDrawer(true)
+        })
+       
+     }
   return (
     <div className="bg-white shadow rounded overflow-hidden group flex flex-col justify-between">
     <div className="relative">
@@ -42,9 +54,13 @@ export default function ProductCard({product}) {
             <div className="text-xs text-gray-500 ml-3">(150)</div>
         </div>
     </div>
-    <Link to={`/products/${product.handle}`}
-        className="block w-full py-1 text-center text-white bg-primary border border-primary rounded-b hover:bg-transparent hover:text-primary transition">Add
-        to cart</Link>
+    <button
+    onClick={()=>addToCart()}
+        className="block w-full py-1 text-center text-white bg-primary border border-primary rounded-b hover:bg-transparent hover:text-primary transition">
+            {
+                addToCartLoader?"Adding...":"Add to cart"
+            }
+            </button>
 </div>
   )
 }

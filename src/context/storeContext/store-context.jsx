@@ -5,6 +5,7 @@ import clientApollo from "../../utils/clientApollo";
 import { cartMutation } from "../../storeQueries/mutation/cart";
 const defaultValues = {
   loading: false,
+  isCartDrawerOpen:false,
   addProductVariantToCart: () => {},
   removeLineItem: () => {},
   updateLineItem: () => {},
@@ -70,7 +71,7 @@ export const StoreProvider = ({ children }) => {
     initializeCheckout();
   }, []);
 
-  const addProductVariantToCart = async ({ variantId, quantity }) => {
+  const addProductVariantToCart = async ({ variantId, quantity },callBack=undefined) => {
     dispatch({
       type: storeActionsTypes.CART_LOADER,
       payload: true,
@@ -113,11 +114,15 @@ export const StoreProvider = ({ children }) => {
           cartData?.data?.cartCreate?.cart ||
           cartData?.data?.cartLinesAdd?.cart,
       });
+      if(callBack){
+        callBack()
+      }
     }
     dispatch({
       type: storeActionsTypes.CART_LOADER,
       payload: false,
     });
+    
   };
 
   const removeLineItem = ({ lineId, cartId }) => {
@@ -183,7 +188,12 @@ export const StoreProvider = ({ children }) => {
         }
       });
   };
-
+  const toggleCartDrawer=(toggle)=>{
+    dispatch({
+      type: storeActionsTypes.TOGGLE_CART_DRAWER,
+      payload: toggle,
+    })
+  }
   return (
     <StoreContext.Provider
       value={{
@@ -191,6 +201,7 @@ export const StoreProvider = ({ children }) => {
         addProductVariantToCart,
         removeLineItem,
         updateLineItem,
+        toggleCartDrawer
       }}
     >
       {children}

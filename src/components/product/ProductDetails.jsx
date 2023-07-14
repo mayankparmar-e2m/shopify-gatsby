@@ -1,11 +1,12 @@
 import { Link } from "gatsby";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import VariantSelector from "../global/VariantSelector";
 import useMoney from "../../hooks/useMoney";
 import useCart from "../../hooks/useCart";
 
 export default function ProductDetails({ product }) {
   const {addVariantToCart}=useCart();
+const [addToCartLoader,setAddToCartLoader] = useState(false)
   const { variants } = product;
   const selectedFirstOrAvailabeVariant =
     variants.find((variant) => variant.availableForSale === true) ||
@@ -21,8 +22,16 @@ export default function ProductDetails({ product }) {
   };
   const selectedVariantPrice = useMoney(variantPrice);
   const addToCart=()=>{
-    addVariantToCart({variantId:selectedVariant.storefrontId, quantity:1})
+     setAddToCartLoader(true)
+     addVariantToCart({variantId:selectedVariant.storefrontId, quantity:1},()=>{
+      setAddToCartLoader(false)
+     })
+    
   }
+  useEffect(()=>{
+    console.log("rendering...")
+  })
+console.log(useCart(),'addToCartLoader')
   return (
     <div className="product-detail w-1/2">
       <h2 className="text-3xl font-medium uppercase mb-2">{product.title}</h2>
@@ -102,7 +111,7 @@ export default function ProductDetails({ product }) {
          onClick={()=>addToCart()}
           className="bg-primary border border-primary text-white px-8 py-2 font-medium rounded uppercase flex items-center gap-2 hover:bg-transparent hover:text-primary transition"
         >
-          <i className="fa-solid fa-bag-shopping"></i> Add to cart
+          <i className="fa-solid fa-bag-shopping"></i>{addToCartLoader ? "Adding...":"Add to cart"} 
         </button>
         <Link
           to={``}

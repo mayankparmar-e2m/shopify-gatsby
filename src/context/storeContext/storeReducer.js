@@ -11,6 +11,11 @@ const storeReducer = (state, action) => {
         ...state,
         loading: action.payload
       }
+      case storeActionsTypes.TOGGLE_CART_DRAWER:
+      return {
+        ...state,
+        isCartDrawerOpen: action.payload
+      }
     default:
       return state
   }
