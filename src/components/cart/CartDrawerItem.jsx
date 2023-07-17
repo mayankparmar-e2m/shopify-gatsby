@@ -2,16 +2,14 @@ import React from 'react'
 import useCart from '../../hooks/useCart';
 import useMoney from '../../hooks/useMoney';
 
-export default function CartDrawerItem({cartItem}) {
+ function CartDrawerItem({cartItem}) {
     const cartItemPrice = {
         price: cartItem.merchandise.price.amount,
         currencyCode: "USD",
         withZero:true
       };
-      console.log(cartItem,'cartItem')
      const price=  useMoney(cartItemPrice)
     const {updateCartLineItem,removeCartLineItem}=useCart();
-    console.log(price,'pricepriceprice')
   return (   
     <li className="flex py-6" key={cartItem.id}>
                                     <div className="h-24 w-24 flex-shrink-0 overflow-hidden rounded-md border border-gray-200">
@@ -49,3 +47,4 @@ export default function CartDrawerItem({cartItem}) {
                                   </li>
   )
 }
+export default CartDrawerItem

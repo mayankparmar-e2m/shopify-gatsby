@@ -18,6 +18,5 @@ export default function useMoney({price,compareAtPrice,currencyCode="USD",withZe
       })
       
   },[currencyCode,price,compareAtPrice,withZero])
-  console.log(moneyFormat,'moneyFormatmoneyFormat')
   return moneyFormat
 }

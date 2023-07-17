@@ -1,5 +1,5 @@
 import { Link } from "gatsby";
-import React, { useEffect, useState } from "react";
+import React, {  useState } from "react";
 import VariantSelector from "../global/VariantSelector";
 import useMoney from "../../hooks/useMoney";
 import useCart from "../../hooks/useCart";
@@ -28,10 +28,6 @@ const [addToCartLoader,setAddToCartLoader] = useState(false)
      })
     
   }
-  useEffect(()=>{
-    console.log("rendering...")
-  })
-console.log(useCart(),'addToCartLoader')
   return (
     <div className="product-detail w-1/2">
       <h2 className="text-3xl font-medium uppercase mb-2">{product.title}</h2>

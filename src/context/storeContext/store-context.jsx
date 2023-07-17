@@ -83,7 +83,8 @@ export const StoreProvider = ({ children }) => {
       },
     ];
     let cartData;
-    if (localStorage.getItem(localStorageKey)) {
+    debugger
+    if (localStorage.getItem(localStorageKey) ) {
       cartData = await clientApollo.mutate({
         mutation: cartMutation.CART_LINE_ADD,
         variables: {

@@ -1,4 +1,4 @@
-import  { useContext } from "react"
+import  { useContext, useMemo } from "react"
 import { StoreContext } from "../context/storeContext/store-context"
 
 const useCart = () => {
@@ -26,6 +26,11 @@ const useCart = () => {
         }
         removeLineItem(lineItemToUpdate)
     }
-    return {loading,addVariantToCart,removeCartLineItem, updateCartLineItem,cart,toggleCartDrawer,isCartDrawerOpen}
+    const cartValue=useMemo(()=>{
+       return {
+        loading,addVariantToCart,removeCartLineItem, updateCartLineItem,cart,toggleCartDrawer,isCartDrawerOpen
+       }
+    },[loading,addVariantToCart,removeCartLineItem, updateCartLineItem,cart,toggleCartDrawer,isCartDrawerOpen])
+    return cartValue
   }
   export default useCart

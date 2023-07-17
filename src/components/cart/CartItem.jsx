@@ -1,8 +1,8 @@
 import { MainImage } from 'gatsby-plugin-image'
-import React from 'react'
+import React, { memo } from 'react'
 import useCart from '../../hooks/useCart'
 
-export default function CartItem({item}) {
+ function CartItem({item}) {
     const {updateCartLineItem,removeCartLineItem} =useCart()
   return (
     <div className='cart-item w-full flex items-center justify-between mb-8 border border-[#cacaca] p-5'>
@@ -37,3 +37,4 @@ export default function CartItem({item}) {
     </div>
   )
 }
+export default memo(CartItem)

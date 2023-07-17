@@ -1,0 +1,4 @@
+export const accountActionsTypes={
+    FETCH_CUSTOMER_DATA:"FETCH_CUSTOMER_DATA",
+    CUSTOMER_LOADER:"CUSTOMER_LOADER"
+}

@@ -1,7 +1,12 @@
 
-import { Link } from "gatsby";
+import { Link, navigate } from "gatsby";
 import React from "react";
 import { useState } from "react";
+import clientApollo from "../../utils/clientApollo";
+import { CUSTOMER_CREATE } from "../../storeQueries/mutation/customer/createCustomer";
+import { CREATE_CUSTOMER_ACCESSTOKEN } from "../../storeQueries/mutation/customer/createCustomerAccessToken";
+import { dayDiffInFromTodayDate, setCookies } from "../../utils/helper";
+import Layout from "../../components/global/Layout";
 export default function RegisterPage() {
   const [registerInput, setRegisterInput] = useState({
     fullName: "",
@@ -26,7 +31,7 @@ export default function RegisterPage() {
         };
       });
   };
-  const formSubmitHandler =  (e) => {
+  const formSubmitHandler =  async(e) => {
     e.preventDefault();
     const {fullName,email,password,phone}=registerInput;
     const fullNameHavespace=fullName.lastIndexOf(" ")?true:false
@@ -34,9 +39,45 @@ export default function RegisterPage() {
     let lastName =fullNameHavespace
           ? fullName.slice(fullName.lastIndexOf(" ") + 1)?.trim()
           : null;
+      try {
+        const registerCustomer=    await clientApollo.mutate({
+          mutation:CUSTOMER_CREATE,
+          variables:{
+            input: {
+              firstName: firstName,
+              lastName: lastName,
+              email: email,
+              phone: phone,
+              password: password,
+              acceptsMarketing: false
+            },
+          }
+        })
+        if(registerCustomer?.data?.customerCreate?.customerUserErrors?.length <= 0){
+          const createCustomerAccessToken=await clientApollo.mutate({
+            mutation:CREATE_CUSTOMER_ACCESSTOKEN,
+            variables:{
+              input: {
+                email: email,
+                password: password
+              }
+            }
+          })
+          if(createCustomerAccessToken?.data?.customerAccessTokenCreate?.customerAccessToken?.accessToken){
+            const customerAccessToken= createCustomerAccessToken?.data?.customerAccessTokenCreate?.customerAccessToken?.accessToken
+            const expiresAt=createCustomerAccessToken?.data?.customerAccessTokenCreate?.customerAccessToken?.expiresAt
+            const tokenExpireInDays=dayDiffInFromTodayDate(expiresAt)
+            setCookies("shopify_cat",customerAccessToken,tokenExpireInDays)
+            navigate('/account/login')
+          }
+        }
+      } catch (error) {
+        console.log(error,'errorerror')
+      }
   };
 
   return (
+    <Layout>
     <div className="register-page pt-24 pb-14">
       <div className="login-wrapper px-4 max-w-[325px] lg:max-w-[435px] w-full mx-auto">
         <h1 className="text-center my-4 text-[24px] lg:text-[42px] text-font_color font-bold">
@@ -203,5 +244,6 @@ export default function RegisterPage() {
       </div>
      
     </div>
+    </Layout>
   );
 }

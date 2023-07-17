@@ -1,22 +1,21 @@
 import { Link } from 'gatsby'
 import { GatsbyImage, getImage } from 'gatsby-plugin-image'
-import React, { useState } from 'react'
+import React, { memo, useCallback, useState } from 'react'
 import useCart from '../../hooks/useCart';
 
-export default function ProductCard({product}) {
+ function ProductCard({product}) {
   const  {addVariantToCart,toggleCartDrawer} =useCart();
   const [addToCartLoader,setAddToCartLoader]=useState(false)
     const selectedVariant=  product.variants[0];
-    console.log(selectedVariant,'selectedVariantselectedVariant')
     const imageData=getImage(selectedVariant.image) || getImage(product?.featuredImage?.gatsbyImageData)
-    const addToCart=()=>{
-        setAddToCartLoader(true)
-        addVariantToCart({variantId:selectedVariant.storefrontId, quantity:1},()=>{
-         setAddToCartLoader(false);
-         toggleCartDrawer(true)
-        })
-       
-     }
+    const addToCart=useCallback(
+        ()=>{
+            setAddToCartLoader(true)
+            addVariantToCart({variantId:selectedVariant.storefrontId, quantity:1},()=>{
+             setAddToCartLoader(false);
+             toggleCartDrawer(true)
+            })  
+    },[addVariantToCart,toggleCartDrawer,selectedVariant.storefrontId])
   return (
     <div className="bg-white shadow rounded overflow-hidden group flex flex-col justify-between">
     <div className="relative">
@@ -64,3 +63,4 @@ export default function ProductCard({product}) {
 </div>
   )
 }
+export default memo(ProductCard)

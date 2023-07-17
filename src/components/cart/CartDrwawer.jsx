@@ -1,14 +1,13 @@
-import React from 'react'
+import React, { memo } from 'react'
 import useCart from '../../hooks/useCart'
 import CartDrawerItem from './CartDrawerItem';
-import useMoney from '../../hooks/useMoney';
+//import useMoney from '../../hooks/useMoney';
 import { Link } from 'gatsby';
 
-export default function CartDrwawer() {
+function CartDrwawer() {
     const {cart,toggleCartDrawer,isCartDrawerOpen}=useCart();
-   const subtotalAmount= useMoney({price:cart?.cost?.subtotalAmount?.amount,currencyCode:cart?.cost?.subtotalAmount?.currencyCode})
+  // const subtotalAmount= useMoney({price:cart?.cost?.subtotalAmount?.amount,currencyCode:cart?.cost?.subtotalAmount?.currencyCode})
     const cartItems = cart?.lines?.nodes || [];
-console.log(cart,'cart?.cost?.subtotalAmount')
   return (
     <>
     {
@@ -46,7 +45,7 @@ console.log(cart,'cart?.cost?.subtotalAmount')
                       <div className="ml-3 flex h-7 items-center">
                         <button type="button" onClick={()=>toggleCartDrawer(false)} className="-m-2 p-2 text-gray-400 hover:text-gray-500">
                           <span className="sr-only">Close panel</span>
-                          <svg className="h-6 w-6" fill="none" viewBox="0 0 24 24" strokeWidth="1.5" stroke="currentColor" ariaHidden="true">
+                          <svg className="h-6 w-6" fill="none" viewBox="0 0 24 24" strokeWidth="1.5" stroke="currentColor" aria-hidden="true">
                             <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
                           </svg>
                         </button>
@@ -58,7 +57,7 @@ console.log(cart,'cart?.cost?.subtotalAmount')
                         <ul role="list" className="-my-6 divide-y divide-gray-200">
                             {
                                  cartItems.map((cartItem) => {
-                                    return <CartDrawerItem cartItem={cartItem}/>
+                                    return <CartDrawerItem cartItem={cartItem} key={cartItem.id}/>
                                   })
                             }
                         </ul>
@@ -69,7 +68,7 @@ console.log(cart,'cart?.cost?.subtotalAmount')
                   <div className="border-t border-gray-200 px-4 py-6 sm:px-6">
                     <div className="flex justify-between text-base font-medium text-gray-900">
                       <p>Subtotal</p>
-                      <p>{subtotalAmount?.price}</p>
+                      {/* <p>{subtotalAmount?.price}</p> */}
                     </div>
                     <p className="mt-0.5 text-sm text-gray-500">Shipping and taxes calculated at checkout.</p>
                     <div className="mt-6">
@@ -97,3 +96,4 @@ console.log(cart,'cart?.cost?.subtotalAmount')
   
   )
 }
+export default memo(CartDrwawer)

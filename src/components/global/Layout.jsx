@@ -1,8 +1,8 @@
-import React from "react";
+import React, { memo } from "react";
 import Navbar from "./Navbar";
 import Footer from "./Footer";
 import CartDrwawer from "../cart/CartDrwawer";
-export default function Layout({children,pageName="index"}) {
+ function Layout({children,pageName="index"}) {
   return (
     <div className={`template-${pageName}`}>
       <Navbar />
@@ -14,3 +14,4 @@ export default function Layout({children,pageName="index"}) {
     </div>
   );
 }
+export default memo(Layout)
